@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 
 
+// like a class 
 const userScehma = mongoose.Schema({
     name:{
         required:true,
@@ -44,5 +45,7 @@ const userScehma = mongoose.Schema({
     
 })
 
+
+// sedning the data to other file 
 const User = mongoose.model("User",userScehma);
 module.exports = User;

@@ -2,18 +2,19 @@
   "name": "amazonclone",
   "version": "1.0.0",
   "description": "A new Flutter project.",
-  "main": "index.js", 
+  "main": "index.js",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "start":"node ./index.js",
-    "dev":"nodemon ./index.js"
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
     "mongoose": "^8.0.0"

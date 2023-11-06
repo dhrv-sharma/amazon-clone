@@ -21,7 +21,12 @@ class custome_field extends StatelessWidget {
               // set color of the field when not focused
               borderSide: BorderSide(color: Colors.black38)),
         ),
-        validator: (val) {},
+        validator: (val) {
+          if (val == null || val.isEmpty) {
+            return 'Enter Your $hint';
+          }
+          return null;
+        },
       ),
     );
   }

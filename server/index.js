@@ -24,6 +24,7 @@ const { default: mongoose } = require('mongoose');
 //middleaware to use another json file 
 // socekt io for continous listening
 // CLIENT(flutter app) ->middleware ->SERVER -> CLIENT(flutter app)
+app.use(express_import.json());
 app.use(authRouter);
 
 
