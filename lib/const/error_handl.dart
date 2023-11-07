@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 void httpsError(
-    {required http.Response response,
+    {
+    // api  return the status code and that json coded in form of response
+    required http.Response response,
     required BuildContext context,
     required VoidCallback onSucces // function
 

@@ -85,6 +85,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       decoration: const BoxDecoration(color: Colors.white),
                       padding: const EdgeInsets.all(8),
                       child: Form(
+                          // form requires a key
                           key: _signUpFormkey,
                           child: Column(
                             children: [
@@ -104,6 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               custom_btn(
                                   text: "Sign up",
                                   onTap: () {
+                                    // here we check whole form is valid or not if yes sign up user function get runs
                                     if (_signUpFormkey.currentState!
                                         .validate()) {
                                       signupuser();

@@ -22,6 +22,7 @@ class custome_field extends StatelessWidget {
               borderSide: BorderSide(color: Colors.black38)),
         ),
         validator: (val) {
+          // validate the text field on here settled conditions
           if (val == null || val.isEmpty) {
             return 'Enter Your $hint';
           }

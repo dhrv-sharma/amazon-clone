@@ -24,7 +24,7 @@ authRouter.post('/api/signup',async(req,res)=>{
     }
 
     // creating an instance for user 
-
+// for passwrod encryption
     const hashpass=await bycryptjs.hash(password,8); // hashing 8 is salt 
     let user =new User({
         email,
@@ -38,7 +38,6 @@ authRouter.post('/api/signup',async(req,res)=>{
     user = await user.save();
     // it will post data
     res.json(user);
-
     }catch(e){
         res.status(500).json({error: e.message});
 
