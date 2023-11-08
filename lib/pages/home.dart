@@ -1,7 +1,10 @@
 import 'package:amazonclone/pages/auth_screen.dart';
+import 'package:amazonclone/providers/userproviders.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class home extends StatefulWidget {
+  static const String routeName = '/home';
   const home({super.key});
 
   @override
@@ -11,6 +14,7 @@ class home extends StatefulWidget {
 class _homeState extends State<home> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
         title: const Text("hello"),
@@ -21,7 +25,7 @@ class _homeState extends State<home> {
               onPressed: () {
                 Navigator.pushNamed(context, AuthScreen.routeName);
               },
-              child: const Text("click me "));
+              child: Text(user.toJson().toString()));
         }),
       ),
     );

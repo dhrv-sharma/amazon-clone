@@ -73,14 +73,14 @@ app.get("/apple",(req,res)=>{
 
 
 // get operation over localhost:3000
-app.get("/",(req,res)=>{
-    res.json(
-        {
-            name:"Dhruv Sharma",
-            desc:"Flutter developer"
-        }
-    )
-})
+// app.get("/",(req,res)=>{
+//     res.json(
+//         {
+//             name:"Dhruv Sharma",
+//             desc:"Flutter developer"
+//         }
+//     )
+// })
 
 
 

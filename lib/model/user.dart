@@ -8,6 +8,7 @@ class User {
   final String address;
   final String email;
   final String type;
+  String? token;
 
   User(
       {required this.id,
@@ -15,7 +16,8 @@ class User {
       required this.name,
       required this.password,
       required this.address,
-      required this.type});
+      required this.type,
+      this.token});
 
 // set data to api object to json
   Map<String, dynamic> toMap() {
@@ -41,4 +43,7 @@ class User {
       type: map['type'] ?? '',
     );
   }
+
+// decoding string to json
+  factory User.fromJson(String source) => User.fromMap(json.decode(source));
 }

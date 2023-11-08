@@ -33,6 +33,11 @@ class _AuthScreenState extends State<AuthScreen> {
         name: username.text);
   }
 
+  void signinuser() {
+    auth.signinuser(
+        context: context, email: email.text, pasword: pass.text, name: "");
+  }
+
   @override
   Widget build(BuildContext context) {
     void dispose() {
@@ -124,10 +129,12 @@ class _AuthScreenState extends State<AuthScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 leading: Radio(
-                  groupValue: _auth,
+                  groupValue: _auth, // these are the possible set of the value
                   activeColor: GlobalVariables.secondaryColor,
-                  value: Auth.signin,
+                  value: Auth
+                      .signin, // particular button get selectd on this value
                   onChanged: (Auth? val) {
+                    // gives another val
                     setState(() {
                       _auth = val!;
                     });
@@ -139,7 +146,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       decoration: const BoxDecoration(color: Colors.white),
                       padding: const EdgeInsets.all(8),
                       child: Form(
-                          key: _signUpFormkey,
+                          key: _signInFormkey,
                           child: Column(
                             children: [
                               custome_field(
@@ -153,7 +160,14 @@ class _AuthScreenState extends State<AuthScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              custom_btn(text: "Sign In", onTap: () {})
+                              custom_btn(
+                                  text: "Sign In",
+                                  onTap: () {
+                                    if (_signInFormkey.currentState!
+                                        .validate()) {
+                                      signinuser();
+                                    }
+                                  })
                             ],
                           )),
                     )
