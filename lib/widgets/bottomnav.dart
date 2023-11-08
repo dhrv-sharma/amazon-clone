@@ -1,5 +1,6 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/pages/account.dart';
+import 'package:amazonclone/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart'
     as badges; // ussed to show number in the icons
@@ -20,9 +21,7 @@ class _BottomBarState extends State<BottomBar> {
   double font_size = 12;
 
   List<Widget> pages = [
-    const Center(
-      child: Text('home page'),
-    ),
+    home_actual_page(),
     AccountScreen(),
     const Center(
       child: Text('explore page'),
