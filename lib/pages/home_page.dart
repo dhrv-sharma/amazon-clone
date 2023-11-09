@@ -1,5 +1,10 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/providers/userproviders.dart';
+import 'package:amazonclone/widgets/caraoselimage.dart';
+import 'package:amazonclone/widgets/dealofday.dart';
+import 'package:amazonclone/widgets/scrollhome.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class home_actual_page extends StatefulWidget {
   const home_actual_page({super.key});
@@ -11,124 +16,169 @@ class home_actual_page extends StatefulWidget {
 class _home_actual_pageState extends State<home_actual_page> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
+
     TextEditingController search = TextEditingController();
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(40),
-          child: AppBar(
-            flexibleSpace: Container(
-              // flexible space is used to give gradient color
-              decoration:
-                  const BoxDecoration(gradient: GlobalVariables.appBarGradient),
-            ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(40),
+        child: AppBar(
+          flexibleSpace: Container(
+            // flexible space is used to give gradient color
+            decoration:
+                const BoxDecoration(gradient: GlobalVariables.appBarGradient),
           ),
         ),
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.068,
-                decoration: const BoxDecoration(
-                    gradient: GlobalVariables.appBarGradient),
-                child: Row(children: [
-                  Container(
-                    // when you use text form field you have to give a parent widget to set the dimension of the text field
-                    padding: const EdgeInsets.fromLTRB(24, 10, 6, 12),
-                    width: 350, // setting the dimension of the
-                    height: 60,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(
-                          10), // to show some elevation it is done
-                      elevation: 1,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          suffixIcon: InkWell(
-                              onTap: () {},
-                              child: const Padding(
-                                padding: EdgeInsets.only(
-                                  left: 0,
-                                ),
-                                child: Icon(
-                                  Icons.qr_code_scanner,
-                                  color: Colors.black54,
-                                  size: 23,
-                                ),
-                              )),
-                          prefixIcon: InkWell(
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.068,
+              decoration:
+                  const BoxDecoration(gradient: GlobalVariables.appBarGradient),
+              child: Row(children: [
+                Container(
+                  // when you use text form field you have to give a parent widget to set the dimension of the text field
+                  padding: const EdgeInsets.fromLTRB(24, 10, 6, 12),
+                  width: 350, // setting the dimension of the
+                  height: 60,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(
+                        10), // to show some elevation it is done
+                    elevation: 1,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        suffixIcon: InkWell(
                             onTap: () {},
                             child: const Padding(
                               padding: EdgeInsets.only(
                                 left: 0,
                               ),
                               child: Icon(
-                                Icons.search,
-                                color: Colors.black,
+                                Icons.qr_code_scanner,
+                                color: Colors.black54,
                                 size: 23,
                               ),
+                            )),
+                        prefixIcon: InkWell(
+                          onTap: () {},
+                          child: const Padding(
+                            padding: EdgeInsets.only(
+                              left: 0,
+                            ),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.black,
+                              size: 23,
                             ),
                           ),
-                          filled: true,
-                          fillColor: Colors
-                              .white, // field backgorund color set to white
-                          contentPadding: const EdgeInsets.only(
-                              top: 10), // padding to content
-                          border: const OutlineInputBorder(
-                            // when field is active
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(7),
-                            ),
-                            borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor:
+                            Colors.white, // field backgorund color set to white
+                        contentPadding: const EdgeInsets.only(
+                            top: 10), // padding to content
+                        border: const OutlineInputBorder(
+                          // when field is active
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(7),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            // when field is  actived
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(7),
-                            ),
-                            borderSide: BorderSide(
-                              color: GlobalVariables.selectedNavBarColor,
-                              width: 1,
-                            ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          // when field is  actived
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(7),
                           ),
+                          borderSide: BorderSide(
+                            color: GlobalVariables.selectedNavBarColor,
+                            width: 1,
+                          ),
+                        ),
 
-                          enabledBorder: const OutlineInputBorder(
-                            // when field is not active
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(7),
-                            ),
-                            borderSide: BorderSide(
-                              color: Colors.black38,
-                              width: 1,
-                            ),
+                        enabledBorder: const OutlineInputBorder(
+                          // when field is not active
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(7),
                           ),
+                          borderSide: BorderSide(
+                            color: Colors.black38,
+                            width: 1,
+                          ),
+                        ),
 
-                          hintText: 'Search Amazon.in',
-                          hintStyle: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 17,
-                          ),
+                        hintText: 'Search Amazon.in',
+                        hintStyle: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
                         ),
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 9,
-                    ),
-                    child: Icon(
-                      Icons.mic_rounded,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 9,
+                  ),
+                  child: Icon(
+                    Icons.mic_rounded,
+                    color: Colors.black,
+                    size: 25,
+                  ),
+                )
+              ]),
+            ),
+            // address box path
+            Container(
+              height: 40,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                Color.fromARGB(255, 114, 226, 221),
+                Color.fromARGB(255, 162, 236, 233),
+              ], stops: [
+                0.5,
+                1.0
+              ])),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on_outlined,
+                      size: 20,
                       color: Colors.black,
-                      size: 25,
                     ),
-                  )
-                ]),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Delivery to ${user.name}- ${user.address}',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        left: 5,
+                        top: 2,
+                      ),
+                      child: Icon(
+                        Icons.arrow_drop_down_outlined,
+                        color: Colors.black,
+                        size: 18,
+                      ),
+                    )
+                  ],
+                ),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.82,
-                color: Colors.black,
-                child: Container(),
-              )
-            ],
-          ),
-        ));
+            ),
+            // category option menu
+            SingleChildScrollView(child: const customeScroll())
+          ],
+        ),
+      ),
+    );
   }
 }
