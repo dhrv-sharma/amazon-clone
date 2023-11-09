@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 
 class custome_field extends StatelessWidget {
   const custome_field(
-      {super.key, required this.controller, required this.hint});
+      // default max line get one
+      {super.key,
+      required this.controller,
+      required this.hint,
+      this.maxlines = 1});
 
   final TextEditingController controller;
   final String hint;
+  final int maxlines;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,7 @@ class custome_field extends StatelessWidget {
           }
           return null;
         },
+        maxLines: maxlines,
       ),
     );
   }

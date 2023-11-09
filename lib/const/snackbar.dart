@@ -1,3 +1,5 @@
+import 'dart:io'; // to pick images
+
 import 'package:amazonclone/const/global_var.dart';
 import 'package:flutter/material.dart';
 
@@ -9,4 +11,11 @@ void snackbar(BuildContext context, String text) {
         text,
         style: const TextStyle(color: GlobalVariables.secondaryColor),
       )));
+}
+
+// to pikc images from gallery
+pickImages() async {
+  List<File> images = [];
+
+  try {} catch (e) {}
 }

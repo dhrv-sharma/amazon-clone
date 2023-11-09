@@ -1,4 +1,6 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/pages/admin_bottom_bar.dart';
+import 'package:amazonclone/pages/admin_screen.dart';
 import 'package:amazonclone/pages/auth_screen.dart';
 import 'package:amazonclone/pages/home.dart';
 import 'package:amazonclone/providers/userproviders.dart';
@@ -14,6 +16,7 @@ void main() {
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: ((settings) =>
           generateRoute(settings)), // create route when call pushnamed function
       theme: ThemeData(
@@ -61,6 +64,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
+
     return loading
         ? const Scaffold(
             body: Center(
@@ -71,6 +76,16 @@ class _MyAppState extends State<MyApp> {
           )
         : token == null || token == ""
             ? const AuthScreen()
-            : const home();
+            : user.type == 'user'
+                ? const home()
+                : user.type != 'admin'
+                    ? const Scaffold(
+                        body: Center(
+                          child: CircularProgressIndicator(
+                            color: GlobalVariables.secondaryColor,
+                          ),
+                        ),
+                      )
+                    : const bottom_admin_bar();
   }
 }

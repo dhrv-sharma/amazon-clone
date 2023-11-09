@@ -163,6 +163,7 @@ class _home_actual_pageState extends State<home_actual_page> {
               ),
             ),
           ),
+          // scrollable part of the image
           const SliverToBoxAdapter(
             child: customeScroll(),
           ),

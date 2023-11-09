@@ -1,36 +1,28 @@
 import 'package:amazonclone/const/global_var.dart';
-import 'package:amazonclone/pages/account.dart';
-import 'package:amazonclone/pages/home_page.dart';
+import 'package:amazonclone/pages/admin_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart'
-    as badges; // ussed to show number in the icons
+import 'package:badges/badges.dart' as badges;
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
-
-  static const String routename = '/actual-home';
+class bottom_admin_bar extends StatefulWidget {
+  const bottom_admin_bar({super.key});
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  State<bottom_admin_bar> createState() => _bottom_admin_barState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _bottom_admin_barState extends State<bottom_admin_bar> {
   int _page = 0;
   double bottom_width = 42;
   double selectedborder = 3;
   double font_size = 12;
 
   List<Widget> pages = [
-    home_actual_page(),
-    AccountScreen(),
+    const AdminScreen(),
     const Center(
-      child: Text('explore page'),
+      child: Text('analtyic'),
     ),
     const Center(
-      child: Text('cart page'),
-    ),
-    const Center(
-      child: Text('more page'),
+      child: Text('ordes page'),
     ),
   ];
 
@@ -85,7 +77,7 @@ class _BottomBarState extends State<BottomBar> {
                 ],
               ),
               label: ''),
-          // profile
+          // analytics
           BottomNavigationBarItem(
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -99,11 +91,11 @@ class _BottomBarState extends State<BottomBar> {
                                     ? GlobalVariables.selectedNavBarColor
                                     : GlobalVariables.backgroundColor,
                                 width: selectedborder))),
-                    child: const Icon(Icons.person_outline),
+                    child: const Icon(Icons.analytics_outlined),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 3),
-                    child: Text('You',
+                    child: Text('Business',
                         style: TextStyle(
                             fontSize: font_size,
                             color: _page == 1
@@ -114,7 +106,7 @@ class _BottomBarState extends State<BottomBar> {
               ),
               label: ''),
 
-          // more
+          // orders
           BottomNavigationBarItem(
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -128,80 +120,14 @@ class _BottomBarState extends State<BottomBar> {
                                     ? GlobalVariables.selectedNavBarColor
                                     : GlobalVariables.backgroundColor,
                                 width: selectedborder))),
-                    child: const Icon(Icons.layers_outlined),
+                    child: const Icon(Icons.all_inbox_outlined),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 3),
-                    child: Text('More',
+                    child: Text('Orders',
                         style: TextStyle(
                             fontSize: font_size,
                             color: _page == 2
-                                ? GlobalVariables.selectedNavBarColor
-                                : Colors.black)),
-                  )
-                ],
-              ),
-              label: ''),
-          // cart
-          BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Container(
-                      width: bottom_width,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              top: BorderSide(
-                                  color: _page == 3
-                                      ? GlobalVariables.selectedNavBarColor
-                                      : GlobalVariables.backgroundColor,
-                                  width: selectedborder))),
-                      child: badges.Badge(
-                        elevation: 0,
-                        badgeContent: Text(
-                          '8',
-                          style: TextStyle(
-                              color: _page == 3
-                                  ? GlobalVariables.selectedNavBarColor
-                                  : Colors.black),
-                        ),
-                        badgeColor: Colors.white,
-                        child: const Icon(Icons.shopping_cart_outlined),
-                      )),
-                  Container(
-                    margin: const EdgeInsets.only(top: 3),
-                    child: Text('Cart',
-                        style: TextStyle(
-                            fontSize: font_size,
-                            color: _page == 3
-                                ? GlobalVariables.selectedNavBarColor
-                                : Colors.black)),
-                  )
-                ],
-              ),
-              label: ''),
-
-// others options
-          BottomNavigationBarItem(
-              icon: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: bottom_width,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            top: BorderSide(
-                                color: _page == 4
-                                    ? GlobalVariables.selectedNavBarColor
-                                    : GlobalVariables.backgroundColor,
-                                width: selectedborder))),
-                    child: const Icon(Icons.more_horiz),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 3),
-                    child: Text('Menu',
-                        style: TextStyle(
-                            fontSize: font_size,
-                            color: _page == 4
                                 ? GlobalVariables.selectedNavBarColor
                                 : Colors.black)),
                   )

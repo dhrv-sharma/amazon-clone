@@ -1,3 +1,4 @@
+import 'package:amazonclone/pages/add_product_Screen.dart';
 import 'package:amazonclone/pages/auth_screen.dart';
 import 'package:amazonclone/pages/home.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,10 @@ Route<dynamic> generateRoute(RouteSettings rs) {
 
     case home.routeName:
       return MaterialPageRoute(settings: rs, builder: (_) => const home());
+
+    case add_product_screen.routeName:
+      return MaterialPageRoute(
+          settings: rs, builder: (_) => const add_product_screen());
     default:
       return MaterialPageRoute(
           settings: rs,
