@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     token = pref.getString('x-auth-token');
     authService.getUser(context: context);
-
+    await Future.delayed(Duration(seconds: 4));
     loading = false;
     setState(() {});
   }
@@ -67,24 +67,27 @@ class _MyAppState extends State<MyApp> {
     final user = Provider.of<UserProvider>(context).user;
 
     return loading
-        ? const Scaffold(
+        ? Scaffold(
             body: Center(
-              child: CircularProgressIndicator(
-                color: GlobalVariables.secondaryColor,
-              ),
-            ),
-          )
+                child: Image.asset(
+            "images/amazon_in.png",
+            width: 270,
+            color: Colors.black,
+            fit: BoxFit.fitWidth,
+          )))
         : token == null || token == ""
             ? const AuthScreen()
             : user.type == 'user'
                 ? const home()
                 : user.type != 'admin'
-                    ? const Scaffold(
+                    ? Scaffold(
                         body: Center(
-                          child: CircularProgressIndicator(
-                            color: GlobalVariables.secondaryColor,
-                          ),
-                        ),
+                            child: Image.asset(
+                          "images/amazon_in.png",
+                          width: 270,
+                          color: Colors.black,
+                          fit: BoxFit.fitWidth,
+                        )),
                       )
                     : const bottom_admin_bar();
   }

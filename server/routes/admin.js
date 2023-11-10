@@ -23,5 +23,18 @@ adminRoute.post('/admin/add-product',async (req,res)=>{
     }
 })
 
+
+// to get all  the product 
+adminRoute.get("/admin/get-product",async (req,res)=>{
+    try {
+        const products= await product.find({}); //list of documnet to find particular item pass id inside ""
+        res.json(products);
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+
+});
+
 // connect to index file
 module.exports = adminRoute;

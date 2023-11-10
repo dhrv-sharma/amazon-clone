@@ -1,5 +1,8 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/model/product.dart';
 import 'package:amazonclone/pages/add_product_Screen.dart';
+import 'package:amazonclone/services/admin_services.dart';
+import 'package:amazonclone/widgets/admin_order.dart';
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -10,6 +13,27 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminScreen> {
+  final adminServices serv = adminServices();
+
+// other method to to tackle with the future builder
+  List<Product> product_list = [];
+
+  bool isLoading = true;
+
+  void getAllProducts() async {
+    product_list = await serv.fetchAllproduct(context);
+    isLoading = false;
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +89,50 @@ class _AdminScreenState extends State<AdminScreen> {
               ],
             ),
           ),
+          SliverToBoxAdapter(
+            child: isLoading
+                ? Container(
+                    height: 180,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: GlobalVariables.selectedNavBarColor,
+                      ),
+                    ),
+                  )
+                : product_list.isEmpty
+                    ? Opacity(
+                        opacity: 0.4,
+                        child: Container(
+                          height: 650,
+                          child: Center(
+                              child: Image.asset(
+                            "images/amazon_in.png",
+                            width: 270,
+                            color: Colors.black,
+                            fit: BoxFit.fitWidth,
+                          )),
+                        ),
+                      )
+                    : GridView.builder(
+                        physics:
+                            NeverScrollableScrollPhysics(), // otherwise it will not scroll
+                        scrollDirection: Axis.vertical,
+                        itemCount: product_list.length,
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          // how many products in rows side thing
+                          crossAxisCount: 2, mainAxisExtent: 320,
+                        ),
+                        itemBuilder: (context, index) {
+                          return admin_product(
+                              src: product_list[index].images[0],
+                              name: product_list[index].name,
+                              price: product_list[index].price.toString(),
+                              quantity:
+                                  product_list[index].quantity.toString());
+                        }),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(

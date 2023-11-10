@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:amazonclone/const/error_handl.dart';
@@ -7,6 +8,7 @@ import 'package:amazonclone/model/product.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class adminServices {
   void sellproduct(
@@ -58,5 +60,35 @@ class adminServices {
 
       snackbar(context, e.toString());
     }
+  }
+
+// function to get admin products
+  Future<List<Product>> fetchAllproduct(BuildContext context) async {
+    List<Product> productList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-product'),
+        headers: <String, String>{
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
+      );
+// .fromJson acept only the string so first res.body gives the raw which we decode so we get map list then we used index to access particular item and then that item get encodeed to string
+      // ignore: use_build_context_synchronously
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            // we will get list products
+            // json decode convert it into list format
+            List temp = jsonDecode(res.body);
+            temp.forEach((element) {
+              productList.add(Product.fromJson(jsonEncode(element)));
+            });
+          });
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      snackbar(context, e.toString());
+    }
+    return productList;
   }
 }
