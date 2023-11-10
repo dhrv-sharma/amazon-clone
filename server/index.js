@@ -20,12 +20,14 @@ const db="mongodb+srv://dhruvsharma10082004:Dhruvsharma@cluster0.lcfa0kn.mongodb
 // importing from another json file
 const authRouter= require('./routes/auth.js');
 const { default: mongoose } = require('mongoose');
+const adminRoute = require('./routes/admin.js');
 
 //middleaware to use another json file 
 // socekt io for continous listening
 // CLIENT(flutter app) ->middleware ->SERVER -> CLIENT(flutter app)
 app.use(express_import.json());
 app.use(authRouter);
+app.use(adminRoute);
 
 
 // local host 
