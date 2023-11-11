@@ -2,7 +2,6 @@ import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/model/product.dart';
 import 'package:amazonclone/pages/add_product_Screen.dart';
 import 'package:amazonclone/services/admin_services.dart';
-import 'package:amazonclone/widgets/admin_order.dart';
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -125,12 +124,134 @@ class _AdminScreenState extends State<AdminScreen> {
                           crossAxisCount: 2, mainAxisExtent: 320,
                         ),
                         itemBuilder: (context, index) {
-                          return admin_product(
-                              src: product_list[index].images[0],
-                              name: product_list[index].name,
-                              price: product_list[index].price.toString(),
-                              quantity:
-                                  product_list[index].quantity.toString());
+                          Product product = product_list[index];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 8),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: GlobalVariables.selectedNavBarColor
+                                          .withOpacity(0.3),
+                                      width: 1.5),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        product.images[0],
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.50,
+                                        height: 130,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      product.name,
+                                      style: const TextStyle(fontSize: 18),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 0, left: 10),
+                                    child: Text(
+                                      "\$${product.price}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: GlobalVariables
+                                              .selectedNavBarColor,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 5, left: 10),
+                                        child: product.quantity == 0.0
+                                            ? const Text(
+                                                "Out Of Stock",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              )
+                                            : Text(
+                                                "Available ${product.quantity.toString().split(".")[0]}",
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.green,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          adminServices adm = adminServices();
+                                          bool check = await adm.deleteProduct(
+                                              context: context,
+                                              product: product,
+                                              onSuccess: () {});
+
+                                          if (check) {
+                                            product_list.removeAt(index);
+                                            setState(() {});
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 5, right: 10),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.black,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.50,
+                                      decoration: const BoxDecoration(
+                                          border: BorderDirectional(
+                                              top: BorderSide(
+                                                  color: Colors.black12,
+                                                  width: 1.5))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 7, top: 3, left: 45),
+                                        child: Text(
+                                          "View Product",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18,
+                                              color: GlobalVariables
+                                                  .selectedNavBarColor),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                            ),
+                          );
                         }),
           )
         ],

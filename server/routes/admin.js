@@ -21,7 +21,7 @@ adminRoute.post('/admin/add-product',async (req,res)=>{
         res.status(500).json({error:error.message});
         
     }
-})
+});
 
 
 // to get all  the product 
@@ -35,6 +35,22 @@ adminRoute.get("/admin/get-product",async (req,res)=>{
     }
 
 });
+
+// to delete the product through aadmin panel
+ adminRoute.post("/admin/delete-product",async (req,res)=>{
+    try {
+        const {id}=req.body;
+        const products= await product.findByIdAndDelete(id); // particular will get deleted 
+        res.json(products);
+        
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+
+        
+    }
+ });
 
 // connect to index file
 module.exports = adminRoute;

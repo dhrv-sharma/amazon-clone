@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:amazonclone/const/error_handl.dart';
@@ -73,7 +76,6 @@ class adminServices {
         },
       );
 // .fromJson acept only the string so first res.body gives the raw which we decode so we get map list then we used index to access particular item and then that item get encodeed to string
-      // ignore: use_build_context_synchronously
       httpsError(
           response: res,
           context: context,
@@ -86,9 +88,36 @@ class adminServices {
             });
           });
     } catch (e) {
-      // ignore: use_build_context_synchronously
       snackbar(context, e.toString());
     }
     return productList;
+  }
+
+  Future<bool> deleteProduct(
+      {required BuildContext context,
+      required Product product,
+      // ignore: use_function_type_syntax_for_parameters
+      required onSuccess()}) async {
+    try {
+      http.Response res =
+          await http.post(Uri.parse('$uri/admin/delete-product'),
+              headers: <String, String>{
+                'Content-Type': 'application/json', // charset removed
+              },
+              body: jsonEncode({"id": product.id})); // encoding
+
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            onSuccess;
+          });
+
+      snackbar(context, "Product deleted");
+      return true;
+    } catch (e) {
+      snackbar(context, e.toString());
+      return false;
+    }
   }
 }
