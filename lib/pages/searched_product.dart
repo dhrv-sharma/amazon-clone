@@ -1,5 +1,6 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/model/product.dart';
+import 'package:amazonclone/pages/productdetails.dart';
 import 'package:amazonclone/providers/userproviders.dart';
 import 'package:amazonclone/services/home_services.dart';
 import 'package:amazonclone/widgets/searched_product.dart';
@@ -27,11 +28,6 @@ class _SearchedScreenState extends State<SearchedScreen> {
 
     isLoading = false;
 
-    product_list.forEach(
-      (element) {
-        print(element.name);
-      },
-    );
     setState(() {});
   }
 
@@ -219,8 +215,15 @@ class _SearchedScreenState extends State<SearchedScreen> {
                           itemCount: product_list.length,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            return search_result_prodcut(
-                                product: product_list[index]);
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, ProductDetailScreen.routeName,
+                                    arguments: product_list[index]);
+                              },
+                              child: search_result_prodcut(
+                                  product: product_list[index]),
+                            );
                           }),
             ),
           ],

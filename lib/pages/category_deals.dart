@@ -1,7 +1,9 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/model/product.dart';
+import 'package:amazonclone/pages/productdetails.dart';
 import 'package:amazonclone/services/admin_services.dart';
 import 'package:amazonclone/services/home_services.dart';
+import 'package:amazonclone/widgets/stars.dart';
 import 'package:flutter/material.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -132,7 +134,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   // how many products in rows side thing
-                                  crossAxisCount: 2, mainAxisExtent: 320,
+                                  crossAxisCount: 2, mainAxisExtent: 335,
                                 ),
                                 itemBuilder: (context, index) {
                                   Product product = product_list[index];
@@ -182,6 +184,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
+                                          const Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 10.0),
+                                            child: rating_app(rating: 4),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 0, left: 10),
@@ -202,7 +209,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    bottom: 5, left: 10),
+                                                    bottom: 10, left: 10),
                                                 child: product.quantity == 0.0
                                                     ? const Text(
                                                         "Out Of Stock",
@@ -225,31 +232,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                               ),
                                             ],
                                           ),
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.50,
-                                              decoration: const BoxDecoration(
-                                                  border: BorderDirectional(
-                                                      top: BorderSide(
-                                                          color: Colors.black12,
-                                                          width: 1.5))),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 7,
-                                                    top: 3,
-                                                    left: 45),
-                                                child: Text(
-                                                  "View Product",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 18,
-                                                      color: GlobalVariables
-                                                          .selectedNavBarColor),
-                                                ),
-                                              )),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  ProductDetailScreen.routeName,
+                                                  arguments:
+                                                      product_list[index]);
+                                            },
+                                            child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.50,
+                                                decoration: const BoxDecoration(
+                                                    border: BorderDirectional(
+                                                        top: BorderSide(
+                                                            color:
+                                                                Colors.black12,
+                                                            width: 1.5))),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 7,
+                                                          top: 3,
+                                                          left: 45),
+                                                  child: Text(
+                                                    "View Product",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 18,
+                                                        color: GlobalVariables
+                                                            .selectedNavBarColor),
+                                                  ),
+                                                )),
+                                          ),
                                         ],
                                       ),
                                     ),
