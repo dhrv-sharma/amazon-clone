@@ -228,7 +228,7 @@ class _add_product_screenState extends State<add_product_screen> {
                                                                 .circular(15),
                                                         child: Image.file(
                                                           e,
-                                                          fit: BoxFit.cover,
+                                                          fit: BoxFit.scaleDown,
                                                           height: 200,
                                                           width: MediaQuery.of(
                                                                   context)

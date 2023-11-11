@@ -167,7 +167,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                         .width *
                                                     0.50,
                                                 height: 130,
-                                                fit: BoxFit.fill,
+                                                fit: BoxFit.scaleDown,
                                               ),
                                             ),
                                           ),

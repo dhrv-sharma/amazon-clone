@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class home_back_services {
+  // function to get category wise products
   Future<List<Product>> fetchCategoryProducts(
       {required BuildContext context, required String category}) async {
     List<Product> productList = [];
@@ -21,6 +22,47 @@ class home_back_services {
           'Content-Type': 'application/json;charset=UTF-8'
         },
       );
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            // we will get list products
+            // json decode convert it into list format
+            List temp = jsonDecode(res.body);
+            temp.forEach((element) {
+              productList.add(Product.fromJson(jsonEncode(element)));
+            });
+          });
+    } catch (e) {
+      snackbar(context, e.toString());
+    }
+    return productList;
+  }
+
+// function to get searchde products
+  Future<List<Product>> fetchSearchProducts(
+      {required BuildContext context, required String query}) async {
+    List<Product> productList = [];
+    try {
+      http.Response res;
+      if (query == "" || query == " ") {
+        res = await http.get(
+          Uri.parse(
+              '$uri/admin/get-product'), // by $category the qyery will be done from database
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+        );
+      } else {
+        res = await http.get(
+          Uri.parse(
+              '$uri/api/search-product/$query'), // by $category the qyery will be done from database
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+        );
+      }
+
       httpsError(
           response: res,
           context: context,

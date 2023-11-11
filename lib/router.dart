@@ -2,6 +2,7 @@ import 'package:amazonclone/pages/add_product_Screen.dart';
 import 'package:amazonclone/pages/auth_screen.dart';
 import 'package:amazonclone/pages/category_deals.dart';
 import 'package:amazonclone/pages/home.dart';
+import 'package:amazonclone/pages/searched_product.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings rs) {
@@ -22,6 +23,13 @@ Route<dynamic> generateRoute(RouteSettings rs) {
           as String; // argument which will be given to the CategoryScreen()
       return MaterialPageRoute(
           settings: rs, builder: (_) => CategoryScreen(category: category));
+
+    case SearchedScreen.routeName:
+      var searchQuery = rs.arguments
+          as String; // argument which will be given to the SearchScreen()
+      return MaterialPageRoute(
+          settings: rs,
+          builder: (_) => SearchedScreen(searchquery: searchQuery));
     default:
       return MaterialPageRoute(
           settings: rs,

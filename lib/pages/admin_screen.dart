@@ -151,7 +151,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                             MediaQuery.of(context).size.width *
                                                 0.50,
                                         height: 130,
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.scaleDown,
                                       ),
                                     ),
                                   ),
