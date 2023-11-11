@@ -21,6 +21,7 @@ const db="mongodb+srv://dhruvsharma10082004:Dhruvsharma@cluster0.lcfa0kn.mongodb
 const authRouter= require('./routes/auth.js');
 const { default: mongoose } = require('mongoose');
 const adminRoute = require('./routes/admin.js');
+const productRouter = require('./routes/product.js');
 
 //middleaware to use another json file 
 // socekt io for continous listening
@@ -28,6 +29,8 @@ const adminRoute = require('./routes/admin.js');
 app.use(express_import.json());
 app.use(authRouter);
 app.use(adminRoute);
+app.use(productRouter);
+
 
 
 // local host 

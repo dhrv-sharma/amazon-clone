@@ -219,10 +219,12 @@ class _AdminScreenState extends State<AdminScreen> {
                                         child: Container(
                                           padding: const EdgeInsets.only(
                                               bottom: 5, right: 10),
-                                          child: const Icon(
+                                          child: Icon(
                                             Icons.delete,
-                                            color: Colors.black,
-                                            size: 18,
+                                            color: GlobalVariables
+                                                .secondaryColor
+                                                .withOpacity(0.91),
+                                            size: 22,
                                           ),
                                         ),
                                       )

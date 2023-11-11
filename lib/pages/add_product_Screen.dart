@@ -87,6 +87,11 @@ class _add_product_screenState extends State<add_product_screen> {
         slivers: [
           SliverAppBar(
             backgroundColor: Colors.white,
+            leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.arrow_back_ios)),
             pinned: true,
             toolbarHeight: 50,
             flexibleSpace: Column(
