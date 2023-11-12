@@ -79,4 +79,49 @@ class home_back_services {
     }
     return productList;
   }
+
+// deal of the day is based on the highest rating recieved by an product
+  Future<Product> fetchDealOfDay({
+    required BuildContext context,
+  }) async {
+    Product product = Product(
+        name: "",
+        description: "",
+        quantity: 0,
+        images: [],
+        category: "",
+        price: 0);
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse(
+            '$uri/api/deal-of-day'), // by $category the qyery will be done from database
+        headers: <String, String>{
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
+      );
+
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            List prd =
+                jsonDecode(res.body); // decode from the server json return
+            var max = 0; // var declare
+            prd.forEach((element) {
+              List rtm = element["ratings"]; // get list of jsn map product
+              rtm.forEach((elm) {
+                // gett compare rating
+                if (elm["rating"] > max) {
+                  max = elm["rating"];
+                  product = Product.fromMap(element);
+                }
+              });
+            });
+          });
+    } catch (e) {
+      snackbar(context, e.toString());
+    }
+    return product;
+  }
 }

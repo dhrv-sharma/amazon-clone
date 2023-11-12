@@ -56,7 +56,7 @@ productRouter.post("/api/rate-product",async (req,res)=>{
             }
             
         }
-        //  creating a rating schema 
+        //  creating a ratingSchema 
         const ratingSchema={
             userId:userId,
             rating,
@@ -68,10 +68,31 @@ productRouter.post("/api/rate-product",async (req,res)=>{
 
         
     } catch (error) {
-        res.status(500).json({error:error.message})
+        res.status(500).json({error:error.message});
         
     }
 })
+
+
+// getting the deal of the day
+//  product with the highest rating will be deal of the day
+productRouter.get('/api/deal-of-day',async(req,res)=>{
+    try {
+        // getting all the products
+        const products= await product.find({});
+        // sort product on the basis of the ratng in decreasing order
+        
+          
+
+        res.json(products);
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+
+        
+    }
+
+});
 
 
 module.exports = productRouter; // used to bind the file index
