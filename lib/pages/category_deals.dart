@@ -1,7 +1,6 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/model/product.dart';
 import 'package:amazonclone/pages/productdetails.dart';
-import 'package:amazonclone/services/admin_services.dart';
 import 'package:amazonclone/services/home_services.dart';
 import 'package:amazonclone/widgets/stars.dart';
 import 'package:flutter/material.dart';
@@ -137,6 +136,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   crossAxisCount: 2, mainAxisExtent: 335,
                                 ),
                                 itemBuilder: (context, index) {
+                                  double totalrating = 0;
+                                  double avgRating = 0;
+                                  for (var i = 0;
+                                      i < product_list[index].rating!.length;
+                                      i++) {
+                                    totalrating +=
+                                        product_list[index].rating![i].rating;
+                                  }
+
+                                  if (totalrating != 0) {
+                                    avgRating = totalrating /
+                                        product_list[index].rating!.length;
+                                  }
                                   Product product = product_list[index];
                                   return Container(
                                     padding: const EdgeInsets.symmetric(
@@ -184,10 +196,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          const Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 10.0),
-                                            child: rating_app(rating: 4),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child:
+                                                rating_app(rating: avgRating),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(

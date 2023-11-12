@@ -33,5 +33,45 @@ productRouter.get("/api/search-product/:name",async (req,res)=>{
 
 });
 
+//  create a post api to rate the product
+productRouter.post("/api/rate-product",async (req,res)=>{
+    try {
+        // from dart file we are seending the data in jsonEncode
+        const {id,rating,userId} =req.body;
+        let products =await product.findById(id);
+        // run the for loop for the rating products have
+        //  if the product ave already been rated by the customer then you have to delete the previous rating of the user to that product
+        // {
+//            userid:"axz",
+//            ratings:3.4    
+        // }
+
+
+        //  checking the user wheather it has given the rating already or not 
+        for (let i = 0; i < products.ratings.length; i++) {
+            if (products.ratings[i].userId == userId) {
+                products.ratings.splice(i,1);// deleting from index of that rating 1 shows how many items want to delte
+                break;
+                
+            }
+            
+        }
+        //  creating a rating schema 
+        const ratingSchema={
+            userId:userId,
+            rating,
+        };
+//  updating schema on the data base
+        products.ratings.push(ratingSchema);
+        products=products.save();
+        res.json(products);
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message})
+        
+    }
+})
+
 
 module.exports = productRouter; // used to bind the file index

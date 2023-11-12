@@ -14,6 +14,15 @@ class search_result_prodcut extends StatefulWidget {
 class _search_result_prodcutState extends State<search_result_prodcut> {
   @override
   Widget build(BuildContext context) {
+    double totalrating = 0;
+    double avgRating = 0;
+    for (var i = 0; i < widget.product.rating!.length; i++) {
+      totalrating += widget.product.rating![i].rating;
+    }
+
+    if (totalrating != 0) {
+      avgRating = totalrating / widget.product.rating!.length;
+    }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       decoration: BoxDecoration(
@@ -56,7 +65,7 @@ class _search_result_prodcutState extends State<search_result_prodcut> {
                     ),
                     Container(
                         padding: const EdgeInsets.only(bottom: 0, left: 10),
-                        child: rating_app(rating: 4)),
+                        child: rating_app(rating: avgRating)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 0, left: 10),
                       child: Text(

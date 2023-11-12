@@ -1,14 +1,14 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/model/product.dart';
 import 'package:amazonclone/pages/searched_product.dart';
-import 'package:amazonclone/services/home_services.dart';
+import 'package:amazonclone/providers/userproviders.dart';
+import 'package:amazonclone/services/product_details_services.dart';
 import 'package:amazonclone/widgets/button.dart';
-import 'package:amazonclone/widgets/caraoselimage.dart';
-import 'package:amazonclone/widgets/searched_product.dart';
 import 'package:amazonclone/widgets/stars.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key, required this.product});
@@ -28,14 +28,34 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     Navigator.pushNamed(context, SearchedScreen.routeName, arguments: search);
   }
 
+  // avg rating for the show at top
+  //  my rating to show the at bottom
+  double avgRating = 0;
+  double myrating = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    double totalrating = 0;
+    for (var i = 0; i < widget.product.rating!.length; i++) {
+      totalrating += widget.product.rating![i].rating;
+      if (widget.product.rating![i].userId ==
+          Provider.of<UserProvider>(context, listen: false).user.id) {
+        myrating = widget.product.rating![i].rating;
+      }
+    }
+
+    if (totalrating != 0) {
+      avgRating = totalrating / widget.product.rating!.length;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final ProductDetailsServices prd_serv = ProductDetailsServices();
+    final user = Provider.of<UserProvider>(context).user;
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(0),
@@ -178,9 +198,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: rating_app(rating: 4),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: rating_app(rating: avgRating),
                       ),
                     ],
                   ),
@@ -322,7 +342,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                   RatingBar.builder(
-                      initialRating: 0,
+                      initialRating: myrating,
                       minRating: 1, // user can give min rating
                       allowHalfRating: true,
                       direction: Axis.horizontal,
@@ -334,7 +354,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             Icons.star,
                             color: GlobalVariables.secondaryColor,
                           ),
-                      onRatingUpdate: (rating) {})
+                      onRatingUpdate: (rating) {
+                        prd_serv.rateProduct(
+                            context: context,
+                            product: widget.product,
+                            rating: rating,
+                            user: user.id);
+                      })
                 ],
               ),
             ),
