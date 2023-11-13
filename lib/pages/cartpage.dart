@@ -193,7 +193,8 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, addressForm.routeName);
+              Navigator.pushNamed(context, addressForm.routeName,
+                  arguments: false);
             },
             child: Container(
               height: 40,
@@ -246,7 +247,10 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
             padding: const EdgeInsets.all(15.0),
             child: custom_btn(
               text: 'Proceed to CheckOut ${user.user.cart.length} items',
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, addressForm.routeName,
+                    arguments: true);
+              },
               color: Colors.yellow[600],
             ),
           ),

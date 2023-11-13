@@ -2,6 +2,7 @@ const express= require('express');
 const userRouter = express.Router();
 const User=require("../model/user");
 const {product} = require('../model/product');
+const Order = require('../model/order');
 
 
 
@@ -75,9 +76,73 @@ userRouter.delete('/user/remove-from-cart',async (req,res)=>{
                     }
                 }
             }
+        user = await user.save();
+        res.json(user);
+
+
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+        
+    }
+});
+
+userRouter.post('/user/save-user-address',async (req,res)=>{
+    try {
+        const {address,user_id}=req.body;
+        let user=await User.findById(user_id);
+        user.address=address;
+
+            
 
         user = await user.save();
         res.json(user);
+
+
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+        
+    }
+});
+
+// order product
+userRouter.post('/user/order-product',async (req,res)=>{
+    try {
+        const {cart,totalPrice,address,user_id}=req.body;
+        let user=await User.findById(user_id);
+        let products = [];
+        for (let i = 0; i < cart.length; i++) {
+            let Product=await product.findById(cart[i].product._id); // getting the product
+            if (Product.quantity >= cart[i].quantity) {
+                Product.quantity -= cart[i].quantity;
+                products.push({product:Product,quantity:cart[i].quantity});
+                await Product.save();
+            }else{
+                return res.status(400).json({msg:'Some Items are of Out Of stock'});
+
+            }
+            
+        }
+
+        user.cart=[]; // empty the cart
+        user =user.save();
+
+        let order=new Order({
+            products:products,
+            totalPrice:totalPrice,
+            address:address,
+            userid:user_id,
+            orderedAt: new Date().getTime(),
+        })
+
+        order=await order.save();
+
+            
+
+        res.json(order);
 
 
 

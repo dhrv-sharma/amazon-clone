@@ -1,13 +1,19 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/const/snackbar.dart';
 import 'package:amazonclone/providers/userproviders.dart';
+import 'package:amazonclone/services/services_auth.dart';
 import 'package:amazonclone/widgets/button.dart';
 import 'package:amazonclone/widgets/field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class addressForm extends StatefulWidget {
-  const addressForm({super.key});
+  addressForm({
+    super.key,
+    required this.isPay,
+  });
   static const String routeName = '/address';
+  bool isPay = false;
 
   @override
   State<addressForm> createState() => _addressFormState();
@@ -19,7 +25,38 @@ class _addressFormState extends State<addressForm> {
   final TextEditingController pinode = TextEditingController();
   final TextEditingController city = TextEditingController();
 
+  final auth_service authServ = auth_service();
+
   final address_key = GlobalKey<FormState>();
+  String addressToBeUsed = "";
+
+  void payFunction(String addressFromtheProvider, double totalSum) {
+    addressToBeUsed = "";
+    bool isForm = flat.text.isNotEmpty ||
+        area.text.isNotEmpty ||
+        pinode.text.isNotEmpty ||
+        city.text.isNotEmpty;
+    if (isForm) {
+      if (address_key.currentState!.validate()) {
+        addressToBeUsed =
+            '${flat.text},${area.text},${city.text} - ${pinode.text}';
+        authServ.saveAddress(
+            context: context,
+            address: '${flat.text},${area.text},${city.text} - ${pinode.text}');
+        authServ.orderProduct(
+            context: context, address: addressToBeUsed, totalSum: totalSum);
+      }
+    } else if (addressFromtheProvider.isNotEmpty) {
+      addressToBeUsed = addressFromtheProvider;
+      authServ.saveAddress(
+          context: context,
+          address: '${flat.text},${area.text},${city.text} - ${pinode.text}');
+      authServ.orderProduct(
+          context: context, address: addressToBeUsed, totalSum: totalSum);
+    } else {
+      snackbar(context, "Please Enter Your Delivery Address");
+    }
+  }
 
   @override
   void dispose() {
@@ -31,11 +68,17 @@ class _addressFormState extends State<addressForm> {
     city.dispose();
   }
 
-  void ongpayResult(res) {}
-
   @override
   Widget build(BuildContext context) {
     var address = context.watch<UserProvider>().user.address;
+    final user = context.watch<UserProvider>().user;
+
+    num sum = 0;
+    user.cart.map(
+      (e) {
+        sum += e['quantity'] * e['product']['price'];
+      },
+    ).toList();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
@@ -163,8 +206,25 @@ class _addressFormState extends State<addressForm> {
                                   : "Confirm New Address",
                               onTap: () {
                                 // here we check whole form is valid or not if yes sign up user function get runs
-                                if (address_key.currentState!.validate()) {}
+                                if (address_key.currentState!.validate()) {
+                                  authServ.saveAddress(
+                                      context: context,
+                                      address:
+                                          '${flat.text},${area.text},${city.text} - ${pinode.text}');
+                                }
                               }),
+                          widget.isPay
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: custom_btn(
+                                      text: 'Proceed To Pay \$${sum}',
+                                      onTap: () {
+                                        payFunction(address, 0.0);
+                                      },
+                                      color: const Color.fromARGB(
+                                          223, 254, 180, 19)),
+                                )
+                              : Container(),
                         ],
                       )),
                 ],

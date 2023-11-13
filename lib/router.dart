@@ -40,8 +40,12 @@ Route<dynamic> generateRoute(RouteSettings rs) {
           settings: rs, builder: (_) => ProductDetailScreen(product: product));
 
     case addressForm.routeName:
+      var ispay = rs.arguments as bool;
       return MaterialPageRoute(
-          settings: rs, builder: (_) => const addressForm());
+          settings: rs,
+          builder: (_) => addressForm(
+                isPay: ispay,
+              ));
     default:
       return MaterialPageRoute(
           settings: rs,

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:amazonclone/const/error_handl.dart';
@@ -110,5 +112,81 @@ class auth_service {
         Provider.of<UserProvider>(context, listen: false).setUser(res.body);
       }
     } catch (e) {}
+  }
+
+// function to save address
+  void saveAddress({
+    required BuildContext context,
+    required String address,
+  }) async {
+    try {
+      // gives isntance of userProver.user
+      // to change userProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+          Uri.parse('$uri/user/save-user-address'),
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: jsonEncode(
+              {'address': address, 'user_id': userProvider.user.id}));
+
+      // ignore: use_build_context_synchronously
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            //  stroing a neew instance of user provider
+            var temp = userProvider.user
+                .copyWith(address: jsonDecode(res.body)['address']);
+
+            // userProvider.user gives an instance of user stored in provider
+            userProvider.setUserFrommodel(temp);
+
+            snackbar(context, "Address Updated");
+          });
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      snackbar(context, e.toString());
+    }
+  }
+
+  void orderProduct(
+      {required BuildContext context,
+      required String address,
+      required double totalSum}) async {
+    try {
+      // gives isntance of userProver.user
+      // to change userProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+          Uri.parse(
+              '$uri/user/order-product'), // api need user_id and id of product
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: jsonEncode({
+            'cart': userProvider.user.cart,
+            'user_id': userProvider.user.id,
+            'address': address,
+            'totalPrice': totalSum
+          }));
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            //  stroing a neew instance of user provider
+            var temp = userProvider.user.copyWith(cart: []);
+
+            // userProvider.user gives an instance of user stored in provider
+            userProvider.setUserFrommodel(temp);
+            snackbar(context, "Your Orderes is Placed");
+            Future.delayed(const Duration(seconds: 4), () {
+              Navigator.pop(context);
+            });
+          });
+    } catch (e) {
+      snackbar(context, e.toString());
+    }
   }
 }

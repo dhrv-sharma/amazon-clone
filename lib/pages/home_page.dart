@@ -149,7 +149,7 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
     final user = Provider.of<UserProvider>(context).user;
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, addressForm.routeName);
+        Navigator.pushNamed(context, addressForm.routeName, arguments: false);
       },
       child: Container(
         height: 40,
