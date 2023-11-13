@@ -134,7 +134,7 @@ userRouter.post('/user/order-product',async (req,res)=>{
             products:products,
             totalPrice:totalPrice,
             address:address,
-            userid:user_id,
+            userId:user_id,
             orderedAt: new Date().getTime(),
         })
 
@@ -152,6 +152,27 @@ userRouter.post('/user/order-product',async (req,res)=>{
         
     }
 });
+
+userRouter.post('/api/orders/me',async (req,res)=>{
+    try {
+        const {userId}=req.body;
+        let orders= await Order.find({userId});
+        res.json(orders);
+
+        
+
+        
+
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+        
+    }
+});
+
+
+
 
 
 

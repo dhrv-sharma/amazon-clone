@@ -1,13 +1,20 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/model/order.dart';
+import 'package:amazonclone/pages/orderdetails.dart';
 import 'package:flutter/material.dart';
 
 class order_product extends StatefulWidget {
   order_product(
-      {super.key, required this.src, required this.name, required this.status});
+      {super.key,
+      required this.src,
+      required this.name,
+      required this.status,
+      required this.order});
 
   String src;
   String name;
   String status;
+  Order order;
 
   @override
   State<order_product> createState() => _order_productState();
@@ -30,9 +37,9 @@ class _order_productState extends State<order_product> {
               width: 180,
               height: 160,
               padding: const EdgeInsets.all(10),
-              child: Image.asset(
+              child: Image.network(
                 widget.src,
-                fit: BoxFit.fitHeight,
+                fit: BoxFit.scaleDown,
                 width: 180,
               ),
             ),
@@ -63,14 +70,20 @@ class _order_productState extends State<order_product> {
               decoration: const BoxDecoration(
                   border: BorderDirectional(
                       top: BorderSide(color: Colors.black12, width: 1.5))),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 7, top: 3, left: 45),
-                child: Text(
-                  "View Order",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: GlobalVariables.selectedNavBarColor),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, orderDetails.routeName,
+                      arguments: widget.order);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 7, top: 3, left: 45),
+                  child: Text(
+                    "View Order",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: GlobalVariables.selectedNavBarColor),
+                  ),
                 ),
               ),
             ),

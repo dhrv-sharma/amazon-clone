@@ -1,9 +1,11 @@
+import 'package:amazonclone/model/order.dart';
 import 'package:amazonclone/model/product.dart';
 import 'package:amazonclone/pages/add_product_Screen.dart';
 import 'package:amazonclone/pages/addressScreen.dart';
 import 'package:amazonclone/pages/auth_screen.dart';
 import 'package:amazonclone/pages/category_deals.dart';
 import 'package:amazonclone/pages/home.dart';
+import 'package:amazonclone/pages/orderdetails.dart';
 import 'package:amazonclone/pages/productdetails.dart';
 import 'package:amazonclone/pages/searched_product.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +48,10 @@ Route<dynamic> generateRoute(RouteSettings rs) {
           builder: (_) => addressForm(
                 isPay: ispay,
               ));
+    case orderDetails.routeName:
+      var order = rs.arguments as Order;
+      return MaterialPageRoute(
+          settings: rs, builder: (_) => orderDetails(order: order));
     default:
       return MaterialPageRoute(
           settings: rs,

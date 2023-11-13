@@ -243,17 +243,19 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
           const total_checkout(),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: custom_btn(
-              text: 'Proceed to CheckOut ${user.user.cart.length} items',
-              onTap: () {
-                Navigator.pushNamed(context, addressForm.routeName,
-                    arguments: true);
-              },
-              color: Colors.yellow[600],
-            ),
-          ),
+          user.user.cart.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: custom_btn(
+                    text: 'Proceed to CheckOut ${user.user.cart.length} items',
+                    onTap: () {
+                      Navigator.pushNamed(context, addressForm.routeName,
+                          arguments: true);
+                    },
+                    color: Colors.yellow[600],
+                  ),
+                )
+              : Container(),
           const SizedBox(
             height: 8,
           ),

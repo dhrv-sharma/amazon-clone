@@ -5,9 +5,12 @@ import 'dart:convert';
 import 'package:amazonclone/const/error_handl.dart';
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/const/snackbar.dart';
+import 'package:amazonclone/model/order.dart';
 import 'package:amazonclone/model/product.dart';
+import 'package:amazonclone/providers/userproviders.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class home_back_services {
   // function to get category wise products
@@ -123,5 +126,37 @@ class home_back_services {
       snackbar(context, e.toString());
     }
     return product;
+  }
+
+  Future<List<Order>> fetchMyOrders({
+    required BuildContext context,
+  }) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    List<Order> productlist = [];
+
+    try {
+      http.Response res = await http.post(
+          Uri.parse(
+              '$uri/api/orders/me'), // by $category the qyery will be done from database
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: jsonEncode({"userId": userProvider.user.id}));
+
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            for (var i = 0; i < jsonDecode(res.body).length; i++) {
+              productlist
+                  .add(Order.fromJson(jsonEncode(jsonDecode(res.body)[i])));
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+      snackbar(context, e.toString());
+    }
+    return productlist;
   }
 }

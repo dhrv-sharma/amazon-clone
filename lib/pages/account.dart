@@ -1,5 +1,7 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/model/order.dart';
 import 'package:amazonclone/providers/userproviders.dart';
+import 'package:amazonclone/services/home_services.dart';
 import 'package:amazonclone/widgets/order.dart';
 import 'package:amazonclone/widgets/top_button.dart';
 import 'package:flutter/material.dart';
@@ -13,46 +15,27 @@ class AccountScreen extends StatefulWidget {
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
+// order contains data of a particular checkout where prouducts have multiple elements as similar for quantity but in order horizontal direction we only show first name of the child
+
 class _AccountScreenState extends State<AccountScreen> {
+  home_back_services hm = home_back_services();
   // temporary list
-  List list = [
-    {
-      "image": "images/laptop.jpg",
-      "name": "HP ZBook Firefly 40.6 cm (16) G9 Mobile Workstation PC",
-      "price": "500",
-      "status": "Dispatched"
-    },
-    {
-      "image": "images/laptop.jpg",
-      "name": "HP ZBook Firefly 40.6 cm (16) G9 Mobile Workstation PC",
-      "price": "500",
-      "status": "Delivered"
-    },
-    {
-      "image": "images/laptop.jpg",
-      "name": "HP ZBook Firefly 40.6 cm (16) G9 Mobile Workstation PC",
-      "price": "500",
-      "status": "Refunded"
-    },
-    {
-      "image": "images/laptop.jpg",
-      "name": "HP ZBook Firefly 40.6 cm (16) G9 Mobile Workstation PC",
-      "price": "500",
-      "status": "Cancelled"
-    },
-    {
-      "image": "images/laptop.jpg",
-      "name": "HP ZBook Firefly 40.6 cm (16) G9 Mobile Workstation PC",
-      "price": "500",
-      "status": "Delivered"
-    },
-    {
-      "image": "images/laptop.jpg",
-      "name": "HP ZBook Firefly 40.6 cm (16) G9 Mobile Workstation PC",
-      "price": "500",
-      "status": "Refunded"
-    },
-  ];
+  List<Order> orderlist = [];
+
+  void getMyOrder() async {
+    orderlist = await hm.fetchMyOrders(context: context);
+    setState(() {
+      print(orderlist.length);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMyOrder();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
@@ -187,14 +170,20 @@ class _AccountScreenState extends State<AccountScreen> {
                   height: 300,
                   padding: const EdgeInsets.only(left: 10, top: 20, right: 0),
                   child: ListView.builder(
-                      itemCount: list.length,
+                      itemCount: orderlist.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: ((context, index) {
                         return order_product(
-                          src: list[index]['image'],
-                          name: list[index]['name'],
-                          status: list[index]['status'],
-                        );
+                            order: orderlist[index],
+                            src: orderlist[index].products[0].images[0],
+                            name: orderlist[index].products[0].name,
+                            status: orderlist[index].status == 0
+                                ? "Ordered"
+                                : orderlist[index].status == 1
+                                    ? "Dispatched"
+                                    : orderlist[index].status == 2
+                                        ? "Delivered"
+                                        : "No Info");
                       })),
                 )
               ]),

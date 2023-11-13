@@ -48,9 +48,7 @@ class _addressFormState extends State<addressForm> {
       }
     } else if (addressFromtheProvider.isNotEmpty) {
       addressToBeUsed = addressFromtheProvider;
-      authServ.saveAddress(
-          context: context,
-          address: '${flat.text},${area.text},${city.text} - ${pinode.text}');
+
       authServ.orderProduct(
           context: context, address: addressToBeUsed, totalSum: totalSum);
     } else {
@@ -219,7 +217,7 @@ class _addressFormState extends State<addressForm> {
                                   child: custom_btn(
                                       text: 'Proceed To Pay \$${sum}',
                                       onTap: () {
-                                        payFunction(address, 0.0);
+                                        payFunction(address, sum.toDouble());
                                       },
                                       color: const Color.fromARGB(
                                           223, 254, 180, 19)),

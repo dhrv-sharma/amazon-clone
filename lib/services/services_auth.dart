@@ -180,7 +180,7 @@ class auth_service {
 
             // userProvider.user gives an instance of user stored in provider
             userProvider.setUserFrommodel(temp);
-            snackbar(context, "Your Orderes is Placed");
+            snackbar(context, "Your Order is Placed");
             Future.delayed(const Duration(seconds: 4), () {
               Navigator.pop(context);
             });
