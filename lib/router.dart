@@ -1,5 +1,6 @@
 import 'package:amazonclone/model/product.dart';
 import 'package:amazonclone/pages/add_product_Screen.dart';
+import 'package:amazonclone/pages/addressScreen.dart';
 import 'package:amazonclone/pages/auth_screen.dart';
 import 'package:amazonclone/pages/category_deals.dart';
 import 'package:amazonclone/pages/home.dart';
@@ -37,6 +38,10 @@ Route<dynamic> generateRoute(RouteSettings rs) {
           as Product; // argument which will be given to the SearchScreen()
       return MaterialPageRoute(
           settings: rs, builder: (_) => ProductDetailScreen(product: product));
+
+    case addressForm.routeName:
+      return MaterialPageRoute(
+          settings: rs, builder: (_) => const addressForm());
     default:
       return MaterialPageRoute(
           settings: rs,

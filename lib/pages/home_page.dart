@@ -1,5 +1,6 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/const/snackbar.dart';
+import 'package:amazonclone/pages/addressScreen.dart';
 import 'package:amazonclone/pages/searched_product.dart';
 import 'package:amazonclone/providers/userproviders.dart';
 
@@ -146,48 +147,53 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final user = Provider.of<UserProvider>(context).user;
-    return Container(
-      height: 40,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Color.fromARGB(255, 114, 226, 221),
-          Color.fromARGB(255, 162, 236, 233),
-        ], stops: [
-          0.5,
-          1.0
-        ]),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.location_on_outlined,
-              size: 20,
-              color: Colors.black,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'Delivery to ${user.name}- ${user.address}',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                  overflow: TextOverflow.ellipsis,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, addressForm.routeName);
+      },
+      child: Container(
+        height: 40,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Color.fromARGB(255, 114, 226, 221),
+            Color.fromARGB(255, 162, 236, 233),
+          ], stops: [
+            0.5,
+            1.0
+          ]),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.location_on_outlined,
+                size: 20,
+                color: Colors.black,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Delivery to ${user.name}- ${user.address}',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(
-                left: 5,
-                top: 2,
-              ),
-              child: Icon(
-                Icons.arrow_drop_down_outlined,
-                color: Colors.black,
-                size: 18,
-              ),
-            )
-          ],
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 5,
+                  top: 2,
+                ),
+                child: Icon(
+                  Icons.arrow_drop_down_outlined,
+                  color: Colors.black,
+                  size: 18,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
