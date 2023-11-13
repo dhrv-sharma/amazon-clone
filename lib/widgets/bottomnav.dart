@@ -1,9 +1,13 @@
 import 'package:amazonclone/const/global_var.dart';
 import 'package:amazonclone/pages/account.dart';
+import 'package:amazonclone/pages/cartpage.dart';
+import 'package:amazonclone/pages/explore.dart';
 import 'package:amazonclone/pages/home_page.dart';
+import 'package:amazonclone/pages/searched_product.dart';
+import 'package:amazonclone/providers/userproviders.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart'
-    as badges; // ussed to show number in the icons
+import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart'; // ussed to show number in the icons
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -21,14 +25,10 @@ class _BottomBarState extends State<BottomBar> {
   double font_size = 12;
 
   List<Widget> pages = [
-    home_actual_page(),
-    AccountScreen(),
-    const Center(
-      child: Text('explore page'),
-    ),
-    const Center(
-      child: Text('cart page'),
-    ),
+    const home_actual_page(),
+    const AccountScreen(),
+    const explore(searchquery: ""),
+    const cartpage(),
     const Center(
       child: Text('more page'),
     ),
@@ -42,6 +42,8 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    final userCartlen = context.watch<UserProvider>().user.cart.length;
+
     return Scaffold(
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
@@ -158,7 +160,7 @@ class _BottomBarState extends State<BottomBar> {
                       child: badges.Badge(
                         elevation: 0,
                         badgeContent: Text(
-                          '8',
+                          userCartlen.toString(),
                           style: TextStyle(
                               color: _page == 3
                                   ? GlobalVariables.selectedNavBarColor

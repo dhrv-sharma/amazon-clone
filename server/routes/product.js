@@ -1,6 +1,6 @@
 const express= require('express');
 const productRouter = express.Router();
-const product = require('../model/product');
+const {product} = require('../model/product');
 
 
 // api to get category product

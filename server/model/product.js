@@ -39,4 +39,4 @@ const productSchema=mongoose.Schema({
 
 // creating model on the data base 
 const product = mongoose.model('Product_info',productSchema); // name on mongo db is product_info
-module.exports=product;
+module.exports={product,productSchema};

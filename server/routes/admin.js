@@ -2,7 +2,7 @@
 
 const express= require('express');
 const adminRoute = express.Router();
-const product = require('../model/product');
+const {product} = require('../model/product');
 
 // creating api for adding route
 // post 

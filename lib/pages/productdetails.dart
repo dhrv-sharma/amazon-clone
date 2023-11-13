@@ -51,6 +51,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     }
   }
 
+  void addTocart() {
+    ProductDetailsServices pred = ProductDetailsServices();
+    pred.addCart(context: context, product: widget.product);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ProductDetailsServices prd_serv = ProductDetailsServices();
@@ -326,7 +331,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         horizontal: 10.0, vertical: 10),
                     child: custom_btn(
                         text: 'Add to Cart',
-                        onTap: () {},
+                        onTap: () {
+                          addTocart();
+                        },
                         color: const Color.fromARGB(223, 254, 180, 19)),
                   ),
                   Container(

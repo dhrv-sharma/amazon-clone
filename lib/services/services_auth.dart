@@ -27,7 +27,8 @@ class auth_service {
           name: name,
           password: pasword,
           address: '',
-          type: '');
+          type: '',
+          cart: []);
 
       // sign up
       // remeber we set an api for /api/signup which gives json
@@ -39,6 +40,7 @@ class auth_service {
       print(res.statusCode);
 
       // snack bar and https error
+      // ignore: use_build_context_synchronously
       httpsError(
           response: res,
           context: context,

@@ -22,6 +22,7 @@ const authRouter= require('./routes/auth.js');
 const { default: mongoose } = require('mongoose');
 const adminRoute = require('./routes/admin.js');
 const productRouter = require('./routes/product.js');
+const userRouter = require('./routes/user.js');
 
 //middleaware to use another json file 
 // socekt io for continous listening
@@ -30,6 +31,8 @@ app.use(express_import.json());
 app.use(authRouter);
 app.use(adminRoute);
 app.use(productRouter);
+app.use(userRouter);
+
 
 
 

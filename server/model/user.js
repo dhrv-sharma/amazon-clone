@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { productSchema} = require('./product');
+
 
 
 
@@ -41,7 +43,18 @@ const userScehma = mongoose.Schema({
     type:{
         type:String,
         default:'user',
-    }
+    },
+    // cart property is an array consisting of the product schema as well as 
+    cart:[
+        {
+            product: productSchema,
+            quantity:{
+                type:Number,
+                required :true
+            }
+        }
+
+    ]
     
 })
 
