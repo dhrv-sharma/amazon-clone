@@ -3,6 +3,7 @@ import 'package:amazonclone/pages/account.dart';
 import 'package:amazonclone/pages/cartpage.dart';
 import 'package:amazonclone/pages/explore.dart';
 import 'package:amazonclone/pages/home_page.dart';
+import 'package:amazonclone/pages/myorder.dart';
 import 'package:amazonclone/pages/searched_product.dart';
 import 'package:amazonclone/providers/userproviders.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,7 @@ class _BottomBarState extends State<BottomBar> {
     const AccountScreen(),
     const explore(searchquery: ""),
     const cartpage(),
-    const Center(
-      child: Text('more page'),
-    ),
+    orderAll()
   ];
 
   void updatepage(int page) {

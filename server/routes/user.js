@@ -171,6 +171,48 @@ userRouter.post('/api/orders/me',async (req,res)=>{
     }
 });
 
+userRouter.post('/user/turn-seller',async (req,res)=>{
+    try {
+        const {userId}=req.body;
+        let user=await User.findById(userId);
+
+        user.type="admin";
+        user = user.save();
+        res.json(user);
+
+        
+
+        
+
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+        
+    }
+});
+
+userRouter.post('/user/turn-user',async (req,res)=>{
+    try {
+        const {userId}=req.body;
+        let user=await User.findById(userId);
+
+        user.type="user";
+        user = user.save();
+        res.json(user);
+
+        
+
+        
+
+
+        
+    } catch (error) {
+        res.status(500).json({error:error.message});
+        
+    }
+});
+
 
 
 

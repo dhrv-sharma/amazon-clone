@@ -1,31 +1,24 @@
 import 'package:amazonclone/const/global_var.dart';
-import 'package:amazonclone/main.dart';
-import 'package:amazonclone/model/product.dart';
-import 'package:amazonclone/pages/add_product_Screen.dart';
-import 'package:amazonclone/pages/admin_product.dart';
+import 'package:amazonclone/model/order.dart';
+import 'package:amazonclone/pages/orderdetails.dart';
 import 'package:amazonclone/services/admin_services.dart';
-import 'package:amazonclone/widgets/top_button.dart';
 import 'package:flutter/material.dart';
 
-class AdminScreen extends StatefulWidget {
-  const AdminScreen({super.key});
+class ordered_admin_screen extends StatefulWidget {
+  const ordered_admin_screen({super.key});
 
   @override
-  State<AdminScreen> createState() => _AdminScreenState();
+  State<ordered_admin_screen> createState() => _ordered_admin_screenState();
 }
 
-class _AdminScreenState extends State<AdminScreen> {
+class _ordered_admin_screenState extends State<ordered_admin_screen> {
+  List<Order>? orders = [];
   final adminServices serv = adminServices();
-
-// other method to to tackle with the future builder
-  List<Product> product_list = [];
-
   bool isLoading = true;
 
-  void getAllProducts() async {
-    product_list = await serv.fetchAllproduct(context);
+  fetchOrders() async {
+    orders = await serv.fetchorderedProdcuts(context);
     isLoading = false;
-
     setState(() {});
   }
 
@@ -33,7 +26,7 @@ class _AdminScreenState extends State<AdminScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllProducts();
+    fetchOrders();
   }
 
   @override
@@ -75,21 +68,14 @@ class _AdminScreenState extends State<AdminScreen> {
                           color: Colors.black,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                          await serv.turnUser(context: context);
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: const Text(
-                            'Admin',
-                            style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text(
+                          'Admin',
+                          style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
                         ),
                       )
                     ],
@@ -101,18 +87,18 @@ class _AdminScreenState extends State<AdminScreen> {
           SliverToBoxAdapter(
             child: isLoading
                 ? Container(
-                    height: 180,
+                    height: 300,
                     child: const Center(
                       child: CircularProgressIndicator(
                         color: GlobalVariables.secondaryColor,
                       ),
                     ),
                   )
-                : product_list.isEmpty
+                : orders!.isEmpty
                     ? Opacity(
                         opacity: 0.4,
                         child: Container(
-                          height: 650,
+                          height: 450,
                           child: Center(
                               child: Image.asset(
                             "images/amazon_in.png",
@@ -126,7 +112,7 @@ class _AdminScreenState extends State<AdminScreen> {
                         physics:
                             NeverScrollableScrollPhysics(), // otherwise it will not scroll
                         scrollDirection: Axis.vertical,
-                        itemCount: product_list.length,
+                        itemCount: orders!.length,
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -134,7 +120,8 @@ class _AdminScreenState extends State<AdminScreen> {
                           crossAxisCount: 2, mainAxisExtent: 320,
                         ),
                         itemBuilder: (context, index) {
-                          Product product = product_list[index];
+                          Order order = orders![index];
+
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 8),
@@ -156,7 +143,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
-                                        product.images[0],
+                                        order.products[0].images[0],
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.50,
@@ -168,7 +155,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                   Container(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      product.name,
+                                      order.products[0].name,
                                       style: const TextStyle(fontSize: 18),
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
@@ -178,7 +165,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                     padding: const EdgeInsets.only(
                                         bottom: 0, left: 10),
                                     child: Text(
-                                      "\$${product.price}",
+                                      "\$${order.totalPrice.toInt()}",
                                       style: TextStyle(
                                           fontSize: 18,
                                           color: GlobalVariables
@@ -186,59 +173,24 @@ class _AdminScreenState extends State<AdminScreen> {
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 5, left: 10),
-                                        child: product.quantity == 0.0
-                                            ? const Text(
-                                                "Out Of Stock",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )
-                                            : Text(
-                                                "Available ${product.quantity.toString().split(".")[0]}",
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.green,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          adminServices adm = adminServices();
-                                          bool check = await adm.deleteProduct(
-                                              context: context,
-                                              product: product,
-                                              onSuccess: () {});
-
-                                          if (check) {
-                                            product_list.removeAt(index);
-                                            setState(() {});
-                                          }
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 5, right: 10),
-                                          child: Icon(
-                                            Icons.delete,
-                                            color: GlobalVariables
-                                                .secondaryColor
-                                                .withOpacity(0.91),
-                                            size: 22,
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 0, left: 10),
+                                    child: Text(
+                                      order.status == 0
+                                          ? "Ordered"
+                                          : order.status == 1
+                                              ? "Dispatched"
+                                              : order.status == 2
+                                                  ? "Out For Delivery"
+                                                  : "Delivered",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: GlobalVariables
+                                              .unselectedNavBarColor
+                                              .withOpacity(0.7),
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                   Container(
                                       width: MediaQuery.of(context).size.width *
@@ -250,18 +202,15 @@ class _AdminScreenState extends State<AdminScreen> {
                                                   width: 1.5))),
                                       child: GestureDetector(
                                         onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      adminProductShow(
-                                                          product: product)));
+                                          Navigator.pushNamed(
+                                              context, orderDetails.routeName,
+                                              arguments: order);
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               bottom: 7, top: 3, left: 45),
                                           child: Text(
-                                            "View Product",
+                                            "Order Details",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 18,
@@ -278,18 +227,6 @@ class _AdminScreenState extends State<AdminScreen> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, add_product_screen.routeName);
-        },
-        elevation: 0,
-        tooltip: 'Add a product', // gives a message on long tap
-        child: const Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

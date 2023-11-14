@@ -111,7 +111,29 @@ class auth_service {
 
         Provider.of<UserProvider>(context, listen: false).setUser(res.body);
       }
-    } catch (e) {}
+    } catch (e) {
+      snackbar(context, e.toString());
+    }
+  }
+
+  Future<void> turnSeller({required BuildContext context}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(Uri.parse('$uri/user/turn-seller'),
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: jsonEncode({'userId': userProvider.user.id}));
+
+      httpsError(
+          response: res,
+          context: context,
+          onSucces: () {
+            snackbar(context, "Welcome Admin");
+          });
+    } catch (e) {
+      snackbar(context, e.toString());
+    }
   }
 
 // function to save address
@@ -131,7 +153,6 @@ class auth_service {
           body: jsonEncode(
               {'address': address, 'user_id': userProvider.user.id}));
 
-      // ignore: use_build_context_synchronously
       httpsError(
           response: res,
           context: context,
@@ -146,7 +167,6 @@ class auth_service {
             snackbar(context, "Address Updated");
           });
     } catch (e) {
-      // ignore: use_build_context_synchronously
       snackbar(context, e.toString());
     }
   }
@@ -188,5 +208,17 @@ class auth_service {
     } catch (e) {
       snackbar(context, e.toString());
     }
+  }
+
+  void logout(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("x-auth-token", "");
+      prefs.setString("x-auth-mail", "");
+      prefs.setString("x-auth-pass", "");
+    } catch (e) {
+      snackbar(context, e.toString());
+    }
+    // ignore: use_build_context_synchronously
   }
 }

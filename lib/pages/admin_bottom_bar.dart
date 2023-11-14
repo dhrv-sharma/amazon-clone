@@ -1,5 +1,7 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/pages/admin_order_details.dart';
 import 'package:amazonclone/pages/admin_screen.dart';
+import 'package:amazonclone/pages/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -18,12 +20,8 @@ class _bottom_admin_barState extends State<bottom_admin_bar> {
 
   List<Widget> pages = [
     const AdminScreen(),
-    const Center(
-      child: Text('analtyic'),
-    ),
-    const Center(
-      child: Text('ordes page'),
-    ),
+    analytics(),
+    ordered_admin_screen()
   ];
 
   void updatepage(int page) {

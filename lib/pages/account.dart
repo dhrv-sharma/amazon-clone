@@ -1,8 +1,14 @@
 import 'package:amazonclone/const/global_var.dart';
+import 'package:amazonclone/main.dart';
 import 'package:amazonclone/model/order.dart';
+import 'package:amazonclone/pages/auth_screen.dart';
+import 'package:amazonclone/pages/myorder.dart';
+import 'package:amazonclone/pages/searched_product.dart';
 import 'package:amazonclone/providers/userproviders.dart';
 import 'package:amazonclone/services/home_services.dart';
+import 'package:amazonclone/services/services_auth.dart';
 import 'package:amazonclone/widgets/order.dart';
+import 'package:amazonclone/widgets/searched_product.dart';
 import 'package:amazonclone/widgets/top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +25,7 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   home_back_services hm = home_back_services();
+  auth_service sv = auth_service();
   // temporary list
   List<Order> orderlist = [];
 
@@ -124,8 +131,21 @@ class _AccountScreenState extends State<AccountScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    top_button(name: "Your Orders", onTap: () {}),
-                    top_button(name: "Turn Seller", onTap: () {})
+                    top_button(
+                        name: "Your Orders",
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => orderAll()));
+                        }),
+                    top_button(
+                        name: "Turn Seller",
+                        onTap: () async {
+                          await sv.turnSeller(context: context);
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => MyApp()));
+                        })
                   ],
                 ),
                 const SizedBox(
@@ -134,8 +154,19 @@ class _AccountScreenState extends State<AccountScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    top_button(name: "Log out", onTap: () {}),
-                    top_button(name: "Your Wishlist", onTap: () {})
+                    top_button(
+                        name: "Log out",
+                        onTap: () {
+                          sv.logout(context);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, AuthScreen.routeName, (route) => false);
+                        }),
+                    top_button(
+                        name: "Your Wishlist",
+                        onTap: () {
+                          Navigator.pushNamed(context, SearchedScreen.routeName,
+                              arguments: "");
+                        })
                   ],
                 ),
                 const SizedBox(
@@ -182,8 +213,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                 : orderlist[index].status == 1
                                     ? "Dispatched"
                                     : orderlist[index].status == 2
-                                        ? "Delivered"
-                                        : "No Info");
+                                        ? "Out For Delivery"
+                                        : "Delivered");
                       })),
                 )
               ]),
