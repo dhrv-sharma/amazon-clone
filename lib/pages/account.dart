@@ -183,14 +183,22 @@ class _AccountScreenState extends State<AccountScreen> {
                             fontWeight: FontWeight.w600, fontSize: 18),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: Text(
-                        "See all",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: GlobalVariables.selectedNavBarColor),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => orderAll()));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: Text(
+                          "See all",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: GlobalVariables.selectedNavBarColor),
+                        ),
                       ),
                     ),
                   ],
