@@ -2,7 +2,7 @@
 
 A new Flutter project.
 
-🚀 Just completed my Amazon Clone Flutter app! 📱💻 Excited to share the tech stack: Java, JavaScript, Node.js, and MongoDB Thunder for API testing. 🧪 Integrated Cloudinary for seamless image storage on the cloud. 🌥️
+🚀 Just completed my Amazon Clone Flutter app! 📱💻 Excited to share the tech stack: Dart, JavaScript, Node.js, and MongoDB Thunder for API testing. 🧪 Integrated Cloudinary for seamless image storage on the cloud. 🌥️
 
 👥 Implemented dual roles - users can rate, add to cart, and search with hints and category filters. Admins manage products, orders, and earnings.
 
